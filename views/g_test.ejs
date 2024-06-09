@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+     <!--Header-->
+<%- include('layout/header');-%>
+    <body>
+        <!-- Navigation-->
+         <%- include('layout/navbar')-%>
+        <!-- Page Header-->
+        <header class="masthead">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="page-heading">
+                            <h1>G DriveTest</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main id="mb-4">
+            <% if (user){ %>
+            <div class="container px-4 px-lg-5">
+                <form id="driverUpdate" data-sb-form-api-token="API_TOKEN" action="/UpdateData" method="POST">
+                    <section>
+                        <section id="personal" aria-label="Personal Information">
+                            <h3>Personal Information</h3>
+                            <input type="hidden" name="id" value="<%= user._id%>"></input>
+                            <div class="form-floating">
+                                <input class="form-control " id="firstname" name="firstname" type="text" placeholder="Enter your First name..." data-sb-validations="required" value="<%= user.firstname%>" readonly/>
+                                <label for="firstname">First Name</label>
+                                <div class="invalid-feedback" data-sb-feedback="firstname:required">A First name is required.</div>
+                            </div>
+                            <div class="form-floating">
+                                <input class="form-control" id="lastname" name="lastname" type="text" placeholder="Enter your Last name..." data-sb-validations="required" value="<%= user.lastname%>" readonly/>
+                                <label for="lastname">Last Name</label>
+                                <div class="invalid-feedback" data-sb-feedback="lastname:required">A Last name is required.</div>
+                            </div>
+
+                            <div class="form-floating">
+                                <input class="form-control" id="licenseNo" name="licenseNo" type="text" placeholder="Enter your license number..." data-sb-validations="required,license"  value="<%= user.licenseNo%>" readonly/>
+                                <label for="licenseNo">License Number</label>
+                                <div class="invalid-feedback" data-sb-feedback="license:required">An License is required.</div>
+                            </div>
+                            <div class="form-floating">
+                                <input class="form-control" id="age" name="age" type="number" placeholder="Enter your Age..." data-sb-validations="required" value="<%= user.age%>" readonly/>
+                                <label for="age">Age</label>
+                                <div class="invalid-feedback" data-sb-feedback="age:required">Age is required.</div>
+                            </div>
+                        </section>
+                        <section id="cardetails" name="car_details">
+                            <h3>Car Details</h3>
+                            <div class="form-floating">
+                                <input class="form-control" id="make" name="car_details[make]" type="text" placeholder="Enter Manufacture..." data-sb-validations="required" value="<%= user.car_details['make']%>"/>
+                                <label for="make">Make</label>
+                                <div class="invalid-feedback" data-sb-feedback="make:required">Manufacture is required.</div>
+                            </div>
+                            <div class="form-floating">
+                                <input class="form-control" id="modelno" name="car_details[model]" type="text" placeholder="Enter Model Number..." data-sb-validations="required" value="<%= user.car_details['model']%>" />
+                                <label for="modelno">Model Number</label>
+                                <div class="invalid-feedback" data-sb-feedback="modelno:required">A Model Number is required.</div>
+                            </div>
+                            <div class="form-floating">
+                                <input class="form-control" id="year" name="car_details[year]" type="number" min="1900" max="2023" step="1" placeholder="Enter your Model Year..." data-sb-validations="required" value="<%= user.car_details['year']%>"/>
+                                <label for="year">Year</label>
+                                <div class="invalid-feedback" data-sb-feedback="year:required">Year is required.</div>
+                            </div>
+                            <div class="form-floating">
+                                <input class="form-control" id="plateno" name="car_details[plateno]" type="number" placeholder="Enter your Plat number..." data-sb-validations="required" value="<%= user.car_details['plateno']%>"/>
+                                <label for="plateno">Plate Number</label>
+                                <div class="invalid-feedback" data-sb-feedback="plateno:required">Plate Number is required.</div>
+                            </div>
+                            <button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Save</button>
+                        </section>
+                    </section>
+                </form>
+            </div>
+            <% } %>
+            <% if (locals.error){ %>
+                <div class="alert alert-danger" role="alert">
+                    This is a danger alert—check it out!
+                  </div>
+                <% } %>
+        </main>
+        <!-- Footer-->
+       <%- include('layout/footer')-%>
+       <!--sCRIPTS-->
+       <%- include('layout/script')-%>
+    </body>
+</html>

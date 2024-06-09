@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include ('layout/header.ejs'); -%>
+    <body>
+        <!-- Navigation-->
+        <%- include ('layout/navbar.ejs'); -%>
+        <!-- Page Header-->
+        <header class="masthead">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="page-heading">
+                            <h1>Sign Up</h1>
+                            <br>
+                            <span class="subheading">Sign Up Page.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <p><h2>Sign Up</h2></p>
+                        <div class="my-5">
+ 
+                            <form id="signupForm" data-sb-form-api-token="API_TOKEN" action="/user/signup" method="post" oninput='repassword.setCustomValidity(repassword.value != password.value ? "Passwords do not match." : "")'>
+                                <%if (RegError){%>
+                                    <div class="alert alert-danger" role="alert">
+                                        <h4 class="alert-heading">Error!</h4>
+                                        <%for (var i=0; i<RegError.length; i++){%>
+                                            <p><%=RegError[i]%></p>
+                                            <hr>
+                                        <%}%>
+                                        <p class="mb-0">Please Try Again.</p>
+                                    </div>
+                                <%}%>
+                                <div class="form-floating">
+                                    <input class="form-control" id="username" name="username" type="text" placeholder="Enter your User name..." data-sb-validations="required" />
+                                    <label for="username">User Name</label>
+                                    <div class="invalid-feedback" data-sb-feedback="username:required">Username is required.</div>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="password" name="password" type="password" placeholder="Enter your Password..." data-sb-validations="required" />
+                                    <label for="password">Password </label>
+                                    <div class="invalid-feedback" data-sb-feedback="password:required">Password is required.</div>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="repassword" name="repassword" type="password" placeholder="Enter your Password..." data-sb-validations="required" />
+                                    <label for="repassword">Confirm Password </label>
+                                    <div class="invalid-feedback" data-sb-feedback="repassword:required">Password is required.</div>
+                                </div>
+                                <div class="form-floating">
+                                    <select class="form-control" id="usertype" name="usertype" data-sb-validations="required" >
+                                        <option></option>
+                                        <option>Driver</option>
+                                        <option>Examiner</option>
+                                        <option>Admin</option>
+                                      </select>
+                                    <label for="make"><b> User Type </b></label>
+                                    <div class="invalid-feedback" data-sb-feedback="make:required">User is required.</div>
+                                </div>
+                                <br>
+                                <!-- Submit Button-->
+                                <button class="btn btn-primary text-uppercase" id="submitBtnSignUp" type="submit">Sign Up</button>
+
+                                <p> You Have Account ? <a href="LOGIN">Login </a> Here</p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Bootstrap core JS-->
+        <%- include ('layout/script.ejs'); -%>
+    </body>
+</html>

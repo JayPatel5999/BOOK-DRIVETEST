@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include ('layout/header.ejs'); -%>
+    <body>
+        <!-- Navigation-->
+        <%- include ('layout/navbar.ejs'); -%>
+        <!-- Page Header-->
+        <header class="masthead">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="page-heading">
+                            <h1>G2 Test</h1>
+                            <span class="subheading">G2 Test Booking.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <p><h2>Personal Information</h2></p>
+                        <div class="my-5">
+ 
+                            <form id="g2Form" data-sb-form-api-token="API_TOKEN" action="/update/user" method="post">
+                                <div class="form-floating">
+                                    <input class="form-control" id="firstname" name="firstname" type="text" placeholder="Enter your First name..." data-sb-validations="required" />
+                                    <label for="firstname">First Name</label>
+                                    <div class="invalid-feedback" data-sb-feedback="firstname:required">A name is required.</div>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="lastname" name="lastname"type="text" placeholder="Enter your Last name..." data-sb-validations="required" />
+                                    <label for="name">Last Name</label>
+                                    <div class="invalid-feedback" data-sb-feedback="lastname:required">A name is required.</div>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="licenseNo" name="licenseNo"type="text" maxlength="8" placeholder="Enter your Licence Number..." data-sb-validations="required" />
+                                    <label for="licenseNo">Licence Number</label>
+                                    <div class="invalid-feedback" data-sb-feedback="licenseNo:required">A Valid Licence number is required.</div>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="age" name="age" type="number" placeholder="Enter your Age..." data-sb-validations="required" />
+                                    <label for="age">Age</label>
+                                    <div class="invalid-feedback" data-sb-feedback="age:required">Age is required.</div>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="dob" name="dob" type="date" placeholder="Enter your Date of Birth..." data-sb-validations="required" />
+                                    <label for="dob">D.O.B.</label>
+                                    <div class="invalid-feedback" data-sb-feedback="dob:required">DOB is required.</div>
+                                </div>
+
+                                 <!--Car Info-->
+                                <p><h2>Car Information</h2></p>
+                                <div class="form-floating">
+                                    <select class="form-control" id="make" name="car_details[make]" data-sb-validations="required" >
+                                        <option></option>
+                                        <option value="hyundai">Hyundai</option>
+                                        <option value="honda">Honda</option>
+                                        <option value="kia">Kia</option>
+                                        <option value="audi">Audi</option>
+                                        <option value="Tata">Tata</option>
+                                      </select>
+                                    <label for="make">Maker </label>
+                                    <div class="invalid-feedback" data-sb-feedback="make:required">Maker is required.</div>
+                                </div>
+                                <br/>
+                                <div class="form-floating">
+                                    <select class="form-control" id="model" name="car_details[model]" data-sb-validations="required" >
+                                        <option></option>
+                                        <option value="upper">Upper</option>
+                                        <option value="lower">Lower</option>
+                                    </select>
+                                    <label for="model">Model </label>
+                                    <div class="invalid-feedback" data-sb-feedback="model:required">Model is required.</div>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="year" name="car_details[year]" type="number" min="1900" max="2023" step="1" value="2023" data-sb-validations="required" />
+                                    <label for="year">Year </label>
+                                    <div class="invalid-feedback" data-sb-feedback="phone:required">Year is required.</div>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="plateno" name="car_details[plateno]" type="text" placeholder="Enter your Plate Number..." data-sb-validations="required" />
+                                    <label for="plateno">Plate Number</label>
+                                    <div class="invalid-feedback" data-sb-feedback="plateno:required">Plate Number is required.</div>
+                                </div>
+                                <br />
+                                
+                                <div class="d-none" id="submitSuccessMessage">
+                                    <div class="text-center mb-3">
+                                        <div class="fw-bolder">Form submission Successful!</div>
+                                        To activate this form, sign up at
+                                        <br />
+                                        <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                                
+                                <!-- Submit Button-->
+                                <button class="btn btn-primary text-uppercase" id="submitBtng2" type="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Bootstrap core JS-->
+        <%- include ('layout/script.ejs'); -%>
+    </body>
+</html>

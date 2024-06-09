@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include ('layout/header.ejs'); -%>
+    <body>
+        <!-- Navigation-->
+        <%- include ('layout/navbar.ejs'); -%>
+        <!-- Page Header-->
+        <header class="masthead">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="page-heading">
+                            <h1>Login</h1>
+                            <br>
+                            <span class="subheading">Login Page.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <p><h2>Login</h2></p>
+                        <div class="my-5">
+ 
+                            <form id="loginForm" data-sb-form-api-token="API_TOKEN" action="/user/login" method="post">
+                                <div class="form-floating">
+                                    <input class="form-control" id="username" name="username" type="text" placeholder="Enter your User name..." data-sb-validations="required" />
+                                    <label for="username">User Name</label>
+                                    <div class="invalid-feedback" data-sb-feedback="username:required">Username is required.</div>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="password" name="password"type="password" placeholder="Enter your Password..." data-sb-validations="required" />
+                                    <label for="name">Password </label>
+                                    <div class="invalid-feedback" data-sb-feedback="password:required">Password is required.</div>
+                                </div>
+                                <br>
+                                <!-- Submit Button-->
+                                <button class="btn btn-primary text-uppercase" id="submitBtnlogin" type="submit">Login</button>
+
+                                <p> Don't Have Account ? <a href="signup">Sign up</a> Here</p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Bootstrap core JS-->
+        <%- include ('layout/script.ejs'); -%>
+    </body>
+</html>
