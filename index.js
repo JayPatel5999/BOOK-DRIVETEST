@@ -10,8 +10,12 @@ const bodyParser= require('body-parser');
 const flash = require('req-flash');
 
 //Connect With Database
-mongoose.connect("mongodb+srv://admin:admin@cluster0.2okosc6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
+MONGODB_URI = "mongodb+srv://admin:admin@cluster0.2okosc6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 //Controller Files
 const GController = require('./controllers/g')
