@@ -7,6 +7,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const flash = require('req-flash');
 const MongoStore = require('connect-mongo');
+require('dotenv').config();
 
 // Set view engine to ejs
 app.set('view engine', 'ejs');
