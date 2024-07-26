@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const flash = require('req-flash');
+const MongoStore = require('connect-mongo');
 
 // Set view engine to ejs
 app.set('view engine', 'ejs');
@@ -33,11 +34,12 @@ app.use(express.static('public'));
 app.use(session({
   secret: 'keyboardcat',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  store: MongoStore.create({ mongoUrl: mongoURI }) // Use MongoStore
 }));
 app.use(flash());
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Global middleware to set user in locals
 app.use('*', function(req, res, next) {
