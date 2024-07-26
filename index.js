@@ -7,7 +7,7 @@ const bodyParser= require('body-parser');
 const flash= require('req-flash');
 
 const mongoose= require('mongoose');
-const uri="mongodb+srv://admin:admin@cluster0.levasit.mongodb.net/DriveTest?retryWrites=true&w=majority";
+const uri="mongodb+srv://admin:admin@cluster0.2okosc6.mongodb.net/DriveTest?retryWrites=true&w=majority&appName=Cluster0";
 mongoose.connect(uri, {useNewUrlParser:true})
 
 const gController=require('./controllers/g')
