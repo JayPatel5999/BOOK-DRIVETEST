@@ -1,3 +1,3 @@
-module.exports = async(req,res)=>{
-    res.render('Appointment');
+module.exports= async(req,res)=>{
+    res.render('appointment');
 }

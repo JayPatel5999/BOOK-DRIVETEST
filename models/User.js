@@ -1,7 +1,8 @@
 const mongoose= require('mongoose');
 const bcrypt = require('bcrypt');
-var uniqueValidator = require('mongoose-unique-validator');
 const Schema= mongoose.Schema;
+
+var uniqueValidator = require('mongoose-unique-validator');
 
 const UserSchema= new Schema(
     {
@@ -25,28 +26,37 @@ const UserSchema= new Schema(
             required: true,
             default: 'default'
         },
-        usertype:{
+        userType:{
             type: String,
             required: true
         },
-        licenseNo   : {
+        LicenseNo   : {
             type: String,
             required: true,
             default: 'default'
         },
-        age : {
+        Age : {
             type: Number,
             required: true,
-            default: 0
+            default: 18
         },
-        dob : {
-            type: Date,
-            required: true,
-            default: 0
+        appointmentId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'AppointmentCollection',
         },
-        appointmentID:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Appointment'
+        TestType:{
+            type:String,
+            default:'G2'
+        },
+        appointmentBooked:{
+            type:Boolean,
+            default:false
+        },
+        comment:{
+            type:String,
+        },
+        testResult:{
+            type:String,
         },
         car_details :{
             make : {
@@ -72,6 +82,9 @@ const UserSchema= new Schema(
         }
     }
 );
+
+UserSchema.plugin(uniqueValidator);
+
 UserSchema.pre('save',function(next){
     const user=this;
 
@@ -79,8 +92,19 @@ UserSchema.pre('save',function(next){
         user.password=hash;
         console.log(error);
         next()
-    })    
+    })
 });
 
-const UserCollection= mongoose.model('User',UserSchema);
+// UserSchema.pre('save',function(next){
+//     const user=this;
+
+//     bcrypt.hash(user.LicenseNo,10,(error,hash)=>{
+//         user.LicenseNo=hash;
+//         console.log(error);
+//         next();
+//     })
+    
+// });
+
+const UserCollection= mongoose.model('UserCollection',UserSchema);
 module.exports=UserCollection;

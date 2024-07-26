@@ -10,6 +10,7 @@ module.exports = async (req, res) => {
         console.log(appointment.date);
         appointment.date.setTime(appointment.date.getTime() + appointment.date.getTimezoneOffset()*60*1000);
         let Formatdate = moment(appointment.date).format('YYYY-MM-DD');
+        console.log("Formatdate "+Formatdate);
         console.log("appointment._id "+appointment._id);
         return{
             id: appointment._id,
@@ -17,7 +18,10 @@ module.exports = async (req, res) => {
             start: Formatdate,
         };
     });
-    console.log("appointments "+JSON.stringify(Appointmentdata));
+    console.log("appointments "+JSON.stringify(Appointmentdata) );
+    // res.render('g2_test', {appointments:
+    //     appointments
+    // });
     res.json(Appointmentdata)
 
 }

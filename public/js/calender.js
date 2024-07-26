@@ -1,14 +1,15 @@
 $(function () {
-  // Initialize time picker
-  $('#timePicker').datetimepicker({
+    // Initialize time picker
+    $('#timePicker').datetimepicker({
         format: 'LT',
         datepicker:false,
+        closeOnTime: true,
         stepping: 30,
-        enabledHours: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+        enabledHours: [9, 10, 11, 12, 13, 14],
     });
 
-  // Initialize calendar
-  $('#calendar').fullCalendar({
+    // Initialize calendar
+    $('#calendar').fullCalendar({
         selectable: true,
         header: {
             left: 'prev,next today',
@@ -18,18 +19,22 @@ $(function () {
         showNonCurrentDates: false,
         selectConstraint:'businessHours',
         businessHours: {
-          start: '08:00', // a start time (08am)
-          end: '18:00', // End time (6pm)
-          dow: [ 1, 2, 3, 4, 5 ], // Monday - Friday
+            dow: [ 1, 2, 3, 4, 5 ], // Monday - Friday
+            start: '09:00', // a start time (10am in this example)
+            end: '14:00', // an end time (6pm in this example)
         },
         select: function (start, end,allDay) {
             var check =$.fullCalendar.formatDate(start, "YYYY-MM-DD");
+            console.log("typeof(check)"+check);
             var today= moment().format('YYYY-MM-DD');
+            console.log("typeof(today)"+today);
+            console.log("check");
             if(check < today){
-                alert("You Can't Select Past Date");
+                alert("You can't select a date in the past");
             }
             else{
                 $('#date').val(check);
+                console.log($("#date").val());
             }
         },
         viewRender: function (view, element) {
@@ -39,10 +44,12 @@ $(function () {
             $("#calendar .fc-past").addClass('fc-nonbusiness');
             if (end < view.end) {
                 $("#calendar .fc-next-button").hide();
+                
+                
                 $("#calendar .fc-next-button").hide();
+
                 return false;
-            } 
-            else {
+            } else {
                 $("#calendar .fc-next-button").show();
             }
     
@@ -56,6 +63,16 @@ $(function () {
         navLinks: true,
         editable: false,
         eventLimit: true,
-        events: []
+        events: '/g2_test'
     });
+
+    // Handle date selection
+    // $('#calendar').on('select', function (start, end) {
+    //     var date = moment(start).format('YYYY-MM-DD');
+    //     $('#date').val(date);
+    //     console.log("date"+date);
+    //     //$('#showTime').val(date);
+
+    //     $('#calendar').fullCalendar('unselect');
+    // });
 });

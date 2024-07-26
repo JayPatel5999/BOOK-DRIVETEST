@@ -1,99 +1,117 @@
-const express = require('express');
-const app = express();
-const path = require('path');
-const ejs = require('ejs');
-const mongoose = require('mongoose');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-const flash = require('req-flash');
-const MongoStore = require('connect-mongo');
-require('dotenv').config();
+const express= require('express');
+const path= require("path");//gets us the specific path of a file
+const ejs= new require('ejs');
+const app= new express();//start new epxress
+const session= require('express-session');
+const bodyParser= require('body-parser');
+const flash= require('req-flash');
 
-// Set view engine to ejs
-app.set('view engine', 'ejs');
+const mongoose= require('mongoose');
+const uri="mongodb+srv://admin:admin@cluster0.levasit.mongodb.net/DriveTest?retryWrites=true&w=majority";
+mongoose.connect(uri, {useNewUrlParser:true})
 
-// Set Mongoose strictQuery option
-mongoose.set('strictQuery', false);
+const gController=require('./controllers/g')
+const g2Controller= require('./controllers/g2')
+const g2UpdateUser =require('./controllers/g2UpdateUser')
+const getInfo= require('./controllers/getInfo')
+const updateInfo= require('./controllers/updateInfo');
+const appointmentController= require('./controllers/appointment');
 
-// Connect to MongoDB using environment variable
-const mongoURI = process.env.MONGODB_URI; // Make sure this environment variable is set
-if (!mongoURI) {
-  throw new Error('MONGODB_URI environment variable is not set');
-}
+//auth and Signup
+const signupController =require('./controllers/signup');
+const LoginController= require('./controllers/login');
+const addUserController=require('./controllers/addUser');
+const userLoginController= require('./controllers/userLogin')
+const logoutController= require('./controllers/logout');
 
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log('Connected to MongoDB');
-}).catch(err => {
-  console.error('Failed to connect to MongoDB', err);
-});
+//Appointments controller
 
-// Middlewares
+const createAppointmentController= require('./controllers/createAppointment');
+const AvailAppointmentsController= require('./controllers/availAppointment');
+const bookAppoinmentController= require('./controllers/bookAppoinment');
+const bookGAppoinmentController= require('./controllers/bookGAppoinment');
+const getAppointmentController= require('./controllers/getAppointment');
+const updateAppointmentController= require('./controllers/updateAppointment');
+const bookedTestController= require('./controllers/bookedTest');
+
+const UpdateTestController= require('./controllers/updateTest');
+
+//middleware
+
+const authValid= require('./middleware/authValidator');
+const adminAuth= require('./middleware/adminAuthentication');
+const defaultCheck= require('./middleware/defaultCheck');
+
+
+const { update } = require('./models/User');
+const examinerAuthentication = require('./middleware/examinerAuthentication');
+
 app.use(express.static('public'));
+app.use(express.json());
+
 app.use(session({
-  secret: 'keyboardcat',
-  resave: false,
-  saveUninitialized: true,
-  store: MongoStore.create({ mongoUrl: mongoURI }) // Use MongoStore
+    secret:"session key",
+    resave:false,
+    saveUninitialized:true
 }));
 app.use(flash());
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Global middleware to set user in locals
-app.use('*', function(req, res, next) {
-  res.locals.user = req.session.user;
-  next();
+app.use(express.urlencoded({extended:true}));
+app.use('*',function(req, res, next) {
+    console.log(req.session.user);
+    res.locals.user = req.session.user;
+    res.locals.users=req.session.users;
+    res.locals.appointments=req.session.appointments;
+    // res.locals.userType =req.session.user.userType;
+    next();
 });
+app.use(bodyParser.urlencoded({extended:true}));
 
-// Controller Files
-const GController = require('./controllers/g');
-const G2Controller = require('./controllers/g2');
-const G2UpdateUserController = require('./controllers/G2UpdateUser');
-const GetDataController = require('./controllers/getData');
-const UpdateDataController = require('./controllers/updateData');
-const SignUpController = require('./controllers/SignUp');
-const NewSignUpController = require('./controllers/NewSignUp.js');
-const LoginController = require('./controllers/login');
-const UserLoginController = require('./controllers/UserLogin');
-const LogoutController = require('./controllers/logout');
-const AppointmentController = require('./controllers/Appointment.js');
-const CreateAppointmentController = require('./controllers/CreateAppointment.js');
-const AvailAppointmentController = require('./controllers/AvailAppointment');
-const BookAppoinmentController = require('./controllers/BookAppointment');
-const GetAppointmentController = require('./controllers/GetAppointment');
-const UpdateAppointmentController = require('./controllers/UpdateAppointment');
 
-// Middlewares for routes
-const authMiddleware = require('./middleware/authMiddleware');
-const defaultCheckerMiddleware = require('./middleware/defaultchecker');
-const AdminAuthMiddleware = require('./middleware/AdminAuthMiddleware');
-const ExaminerAuthMiddleware = require('./middleware/ExaminerAuthMiddleware');
+app.set('view engine','ejs');// this will recognize ejs extension
 
-// Routes
-app.get('/', (req, res) => {
-  res.render('index');
-});
 
-app.get('/g2_test', [authMiddleware, defaultCheckerMiddleware], BookAppoinmentController);
-app.get('/GetAppointment', AvailAppointmentController);
-app.get('/events/:id', GetAppointmentController);
-app.get('/g_test', [authMiddleware, defaultCheckerMiddleware], GController);
-app.get('/login', LoginController);
-app.post('/user/login', UserLoginController);
-app.get('/logout', LogoutController);
-app.get('/signup', SignUpController);
-app.post("/update/user", G2UpdateUserController);
-app.post('/update/Appointment', UpdateAppointmentController);
-app.post("/GetData", GetDataController);
-app.post("/UpdateData", UpdateDataController);
-app.post("/user/signup", NewSignUpController);
-app.get("/appointment", AdminAuthMiddleware, AppointmentController);
-app.post("/create/appointment", CreateAppointmentController);
+app.listen(4000,()=>{
+    console.log("App is listening at 4000");
+    
+})
 
-// Start server
-app.listen(4000, () => {
-  console.log('App listening on port 4000');
-});
+app.get('/',(req,res)=>{
+    res.render('index');
+})
+
+// app.get('/g2_test',[authValid,defaultCheck],g2Controller);
+app.get('/g2_test',[authValid,defaultCheck],bookAppoinmentController);
+
+app.get('/getAppointments',AvailAppointmentsController);
+
+app.get('/events/:id',getAppointmentController);
+
+app.post('/test/update',UpdateTestController);
+
+// app.post('/getInfo',getInfo);
+
+app.post('/update/user',g2UpdateUser);
+
+app.post('/update/appointment',updateAppointmentController);
+
+// app.post('/updateInfo',updateInfo);
+
+app.get('/signup',signupController);
+
+app.get('/g_test',[authValid,defaultCheck],bookGAppoinmentController);
+// app.get('/g_test',[authValid,defaultCheck],bookedTestController);
+
+app.get('/roadTest',examinerAuthentication,bookedTestController);
+
+
+app.get('/appointment',adminAuth,appointmentController);
+
+app.post('/create/appointment',createAppointmentController);
+
+app.get('/login',LoginController);
+
+app.post('/user/login',userLoginController)
+
+app.post('/user/signup',addUserController)
+
+app.get('/logout',logoutController)

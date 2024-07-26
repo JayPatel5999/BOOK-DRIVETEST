@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<!--Header-->
+<%- include('layouts/header');-%>
+    <body>
+        <!-- Navigation-->
+        <%- include('layouts/navbar')-%>
+        <%- include('layouts/scripts')-%>
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('assets/img/home-bg.jpg')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>Drive Tests</h1>
+                            <span class="subheading">DriveTest Booking Kisko</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <main id="mb4">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <!-- Post preview-->
+                    <div class="container mt-5">
+                        <h1 class="text-center mb-3">Booked Appointments</h1>
+                        <!-- Filter option -->
+                        <div class="form-group">
+                          <label for="filterInput">Filter by Test Type:</label>
+                          <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Test Type
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <button class="dropdown-item" id="g2Filter" type="button">G2</button>
+                                    <button class="dropdown-item" id="gFilter" type="button">G</button>
+                                    <button class="dropdown-item" id="showAll" type="button">All</button>
+                                </div>
+                          </div>
+                        </div>
+                       <% if(users.length){ %>
+                        <div class="list-group" >
+                            <table class="table table-hover">
+                                <thead class="thead-dark">
+                                  <tr >
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">TestType</th>
+                                    <th scope="col">date</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="appointmentList">
+                                  <% for(let i=0; i<users.length; i++){ %>
+                                    <%if(users[i].appointment) {%>
+                                    <tr class="btn-default list <%= users[i].TestType %>" id="<%= users[i].username%>Drop" data-bs-toggle="collapse" data-bs-target="#<%= users[i].username%>"  aria-expanded="false">
+                                    <th scope="row"><%= i+1%></th>
+                                    <td><%= users[i].firstname +" "+ users[i].lastname%></td>
+                                    <td class=><%= users[i].TestType %></td>
+                                    <td><%= users[i].appointment.date %></td>
+                                    
+                                  </tr>
+                                  <tr class="collapse fade" id="<%= users[i].username%>" data-parent="#<%= users[i].username%>Drop" data-mdb-toggle="animation" data-mdb-animation="slide-out-down">
+                                    <td colspan="4" >
+                                      <div >
+                                        <form action="/test/update" method="post" >
+                                            <section id="personal" aria-label="Personal Information">
+                                                <h3>Personal Information</h3>
+                                                <input type="hidden" name="id" value="<%= users[i]._id%>"></input>
+                                                <div class="form-floating">
+                                                    <input class="form-control " id="firstname" name="firstname" type="text" placeholder="Enter your First name..." data-sb-validations="required" value="<%= users[i].firstname%>" readonly/>
+                                                    <label for="firstname">First Name</label>
+                                                    <div class="invalid-feedback" data-sb-feedback="firstname:required">A First name is required.</div>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <input class="form-control" id="lastname" name="lastname" type="text" placeholder="Enter your Last name..." data-sb-validations="required" value="<%= users[i].lastname%>" readonly/>
+                                                    <label for="Lastname">Last Name</label>
+                                                    <div class="invalid-feedback" data-sb-feedback="lastname:required">A Last name is required.</div>
+                                                </div>
+                    
+                                                <div class="form-floating">
+                                                    <input class="form-control" id="licence" name="LicenseNo" type="text" placeholder="Enter your licence number..." data-sb-validations="required,licence"  value="<%= users[i].LicenseNo%>" readonly/>
+                                                    <label for="licence">Licence Number</label>
+                                                    <div class="invalid-feedback" data-sb-feedback="licence:required">An Licence is required.</div>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <input class="form-control" id="age" name="Age" type="number" placeholder="Enter your Age..." data-sb-validations="required" value="<%= users[i].Age%>" readonly/>
+                                                    <label for="age">Age</label>
+                                                    <div class="invalid-feedback" data-sb-feedback="phone:required">Age is required.</div>
+                                                </div>
+                                            </section>
+                                            <section id="carDetail" name="car_details">
+                                                <h3>Car Details</h3>
+                                                <div class="form-floating">
+                                                    <input class="form-control" id="make" name="car_details[make]" type="text" placeholder="Enter Manufacture..." data-sb-validations="required" value="<%= users[i].car_details['make']%>" readonly/>
+                                                    <label for="make">Make</label>
+                                                    <div class="invalid-feedback" data-sb-feedback="make:required">Manufacture is required.</div>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <input class="form-control" id="modelno" name="car_details[model]" type="text" placeholder="Enter Model Number..." data-sb-validations="required" value="<%= users[i].car_details['model']%>" readonly/>
+                                                    <label for="modelno">Model Number</label>
+                                                    <div class="invalid-feedback" data-sb-feedback="modelno:required">A Model Number is required.</div>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <input class="form-control" id="year" name="car_details[year]" type="number" min="1900" max="2023" step="1" placeholder="Enter your Model Year..." data-sb-validations="required" value="<%= users[i].car_details['year']%>" readonly/>
+                                                    <label for="year">Year</label>
+                                                    <div class="invalid-feedback" data-sb-feedback="year:required">year is required.</div>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <input class="form-control" id="platNumber" name="car_details[plateno]" type="number" placeholder="Enter your Plat number..." data-sb-validations="required" value="<%= users[i].car_details['plateno']%>" readonly/>
+                                                    <label for="platNumber">Plat Number</label>
+                                                    <div class="invalid-feedback" data-sb-feedback="platNumber:required">Plat Number is required.</div>
+                                                </div>
+                                                
+                                            </section>
+                                            <section id="appointmentDetail" name="appointment">
+                                                <h3>Test Info</h3>
+                                                <div class="form-floating">
+                                                    <input class="form-control" id="Appdate" name="date" type="text" data-sb-validations="required" value="<%= users[i].appointment.date%>" readonly/>
+                                                    <label for="make">Date</label>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <input class="form-control" id="Apptime" name="time" type="text" data-sb-validations="required" value="<%= users[i].appointment.time%>" readonly/>
+                                                    <label for="modelno">Time</label>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <textarea class="form-control" id="testComment" name="comment" placeholder="Enter your comment..."  value="">
+
+                                                    </textarea>
+                                                    <label for="year">Comments</label>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <!-- <input class="form-control" id="platNumber" name="car_details[plateno]" type="number" placeholder="Enter your Plat number..." data-sb-validations="required" value="<%= users[i].car_details['plateno']%>" /> -->
+                                                    <select class="custom-select form-control" id="platNumber" name="testResult"  placeholder="Enter your Plat number..." >
+                                                        <option selected>TBD</option>
+                                                        <option value="Pass">Pass</option>
+                                                        <option value="Fail">Fail</option>
+                                                      </select>
+                                                    <label for="platNumber">Test Result</label>
+                                                </div>
+                                                
+                                            </section>
+
+                                            <button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Save</button>
+                                        </form>
+                                        </div>
+                                  </tr>
+                                  <% } %>
+                                    <% } %>
+                                </tbody>
+                              </table>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Footer-->
+        <%- include('layouts/footer')-%>
+        <!--sCRIPTS-->
+       
+        
+    </body>
+</html>

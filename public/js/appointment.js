@@ -7,10 +7,11 @@ $(function () {
         stepping: 30,
         enabledHours: [9, 10, 11, 12, 13, 14],
     });
-
+    // $('.dropdown-toggle').dropdown('toggle');
     // Initialize calendar
     $('#calendarPK').fullCalendar({
         selectable: true,
+        contentHeight: 500,
         header: {
             left: 'prev,next today',
             center: 'title',
@@ -44,10 +45,12 @@ $(function () {
             $("#calendar .fc-past").addClass('fc-nonbusiness');
             if (end < view.end) {
                 $("#calendar .fc-next-button").hide();
+                
+                
                 $("#calendar .fc-next-button").hide();
+
                 return false;
-            } 
-            else {
+            } else {
                 $("#calendar .fc-next-button").show();
             }
     
@@ -62,7 +65,7 @@ $(function () {
         editable: true,
         eventLimit: true,
         events:{
-            url: '/GetAppointment',
+            url: '/getAppointments',
             type: 'GET',
             success: function(data) {
                 var events=[];
@@ -83,6 +86,7 @@ $(function () {
             type: 'GET',
             success: function(data) {
                 console.log("data"+data._id);
+                $('#editAppointment').removeAttr('hidden');
                $('#appointmentId').val(data._id);
                $('#time').val(data.time);
             }
@@ -93,4 +97,13 @@ $(function () {
         },
     });
 
+    // Handle date selection
+    // $('#calendar').on('select', function (start, end) {
+    //     var date = moment(start).format('YYYY-MM-DD');
+    //     $('#date').val(date);
+    //     console.log("date"+date);
+    //     //$('#showTime').val(date);
+
+    //     $('#calendar').fullCalendar('unselect');
+    // });
 });
