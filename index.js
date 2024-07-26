@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express= require('express');
 const path= require("path");//gets us the specific path of a file
 const ejs= new require('ejs');
@@ -7,8 +8,13 @@ const bodyParser= require('body-parser');
 const flash= require('req-flash');
 
 const mongoose= require('mongoose');
-const uri="mongodb+srv://admin:admin@cluster0.2okosc6.mongodb.net/DriveTest?retryWrites=true&w=majority&appName=Cluster0";
-mongoose.connect(uri, {useNewUrlParser:true})
+const mongoURI = process.env.MONGODB_URI; // Use environment variable
+if (!mongoURI) {
+  throw new Error('MONGODB_URI environment variable is not set');
+}
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Failed to connect to MongoDB', err));
 
 const gController=require('./controllers/g')
 const g2Controller= require('./controllers/g2')
