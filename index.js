@@ -9,6 +9,24 @@ const session = require('express-session');
 const bodyParser= require('body-parser');
 const flash = require('req-flash');
 
+
+mongoose.set('strictQuery', false); 
+
+// Connect to MongoDB using environment variable
+const mongoURI = process.env.MONGODB_URI; // Make sure this environment variable is set
+if (!mongoURI) {
+  throw new Error('MONGODB_URI environment variable is not set');
+}
+
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log('Connected to MongoDB');
+}).catch(err => {
+  console.error('Failed to connect to MongoDB', err);
+});
+
 //Connect With Database
 MONGODB_URI = "mongodb+srv://admin:admin@cluster0.2okosc6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
